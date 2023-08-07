@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# Define the data file
+data_file="student_data.csv"
+
+# Function to display the menu
+display_menu() {
+    echo "Student Information Management"
+    echo "1. Add Student"
+    echo "2. Update Student"
+    echo "3. Delete Student"
+    echo "4. Exit"
+}
+
+# Function to add a student
+add_student() {
+    echo "Enter student information (ID, Name, Age, Grade):"
+    read id name age grade
+    echo "$id,$name,$age,$grade" >> "$data_file"
+    echo "Student added successfully!"
+}
+
+# Function to update a student
+update_student() {
+    echo "Enter student ID to update:"
+    read id
+    grep -v "^$id," "$data_file" > "$data_file.tmp"
+    mv "$data_file.tmp" "$data_file"
+    echo "Enter updated student information (Name, Age, Grade):"
+    read name age grade
+    echo "$id,$name,$age,$grade" >> "$data_file"
+    echo "Student updated successfully!"
+}
+
+# Function to delete a student
+delete_student() {
+    echo "Enter student ID to delete:"
+    read id
+    grep -v "^$id," "$data_file" > "$data_file.tmp"
+    mv "$data_file.tmp" "$data_file"
+    echo "Student deleted successfully!"
+}
+
+# Main loop
+while true; do
+    display_menu
+    read choice
+    case $choice in
+        1) add_student ;;
+        2) update_student ;;
+        3) delete_student ;;
+        4) exit ;;
+        *) echo "Invalid choice. Please select a valid option." ;;
+    esac
+done
